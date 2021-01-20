@@ -14,6 +14,10 @@ This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned with others.
 */
 
+* {
+    box-sizing: border-box;
+}
+
 .dropdown-menu li:hover .sub-menu {
     visibility: visible;
 }
@@ -24,4 +28,32 @@ Use it to make something cool, have fun, and share what you've learned with othe
 
 .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
     color: rgba(0,0,0,.9);
+}
+
+.header-top-bg {
+    background-image: url(./assets/img/header-bg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+.logo-wrapper {
+    padding: 90px 0;
+}
+
+.custom-logo.img-fluid-link {
+    display: inline-block;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 980px) {
+    .logo-wrapper {
+        padding: 60px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .logo-wrapper {
+        padding: 50px;
+    }
 }

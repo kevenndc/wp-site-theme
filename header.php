@@ -9,11 +9,37 @@
 <body <?php body_class(); ?>>
     <div id="page" class="site">
         <header>
+            <div class="header-top-bg px-3 px-lg-0 py-sm-4 py-lg-0">
+                <div class="logo-wrapper text-center px-5 px-lg-0">
+                    <?php
+                        if ( has_custom_logo() ) {
+                            if ( is_home() || is_front_page() ) {
+                            ?>
+                                <h1 class="site-logo">
+                                    <?php the_custom_logo(); ?>
+                                </h1>
+                                
+                            <?php
+                            } else {
+                                the_custom_logo();
+                            }
+                        } else {
+                        ?>
+                            <h1 class="site-title">
+                                <a href="<?php home_url(); ?>" title="<?php bloginfo('name'); ?>">
+                                    <?php bloginfo('name'); ?>
+                                </a>
+                            </h1>
+                        <?php
+                        }
+                    ?>
+                </div>
+            </div>
             <nav class="navbar navbar-expand-md navbar-light bg-light" role="navigation">
                 <div class="container">
-                    <a class="navbar-brand" href="#">
+                    <!-- <a class="navbar-brand" href="#">
                         Navbar
-                    </a>
+                    </a> -->
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation', 'your-theme-slug' ); ?>">
                         <span class="navbar-toggler-icon"></span>
