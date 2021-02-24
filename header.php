@@ -17,8 +17,7 @@
                             ?>
                                 <h1 class="site-logo">
                                     <?php the_custom_logo(); ?>
-                                </h1>
-                                
+                                </h1>   
                             <?php
                             } else {
                                 the_custom_logo();

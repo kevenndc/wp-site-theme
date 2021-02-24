@@ -95,3 +95,17 @@ function change_logo_class( $html ) {
 }
 
 add_filter( 'get_custom_logo', 'change_logo_class' );
+
+/**
+ * Header Settings
+ */
+function header_customizer( $wp_customize ) {
+    $wp_customize->add_section(
+        'sec_header', array(
+            'title'         => __( 'Header settings', 'wp_site_theme' ),
+            'description'   => __( 'All settings related to the theme header' ),
+            'priority'      => 160,
+        )
+    );
+}
+add_action( 'customize_register', 'header_customizer' );
