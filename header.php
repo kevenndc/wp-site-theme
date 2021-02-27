@@ -9,27 +9,27 @@
 <body <?php body_class(); ?>>
     <div id="page" class="site">
         <header>
-            <div class="header-top-bg px-3 px-lg-0 py-sm-4 py-lg-0">
+            <div style="background-image: url(<?php echo get_theme_mod( 'set_header_bg' ) ?>)" class="px-3 px-lg-0 py-sm-4 py-lg-0">
                 <div class="logo-wrapper text-center px-5 px-lg-0">
                     <?php
                         if ( has_custom_logo() ) {
                             if ( is_home() || is_front_page() ) {
-                            ?>
+                                ?>
                                 <h1 class="site-logo">
                                     <?php the_custom_logo(); ?>
                                 </h1>   
-                            <?php
+                                <?php
                             } else {
                                 the_custom_logo();
                             }
                         } else {
-                        ?>
+                            ?>
                             <h1 class="site-title">
                                 <a href="<?php home_url(); ?>" title="<?php bloginfo('name'); ?>">
                                     <?php bloginfo('name'); ?>
                                 </a>
                             </h1>
-                        <?php
+                            <?php
                         }
                     ?>
                 </div>

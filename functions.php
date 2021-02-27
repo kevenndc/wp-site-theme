@@ -96,16 +96,9 @@ function change_logo_class( $html ) {
 
 add_filter( 'get_custom_logo', 'change_logo_class' );
 
-/**
- * Header Settings
- */
-function header_customizer( $wp_customize ) {
-    $wp_customize->add_section(
-        'sec_header', array(
-            'title'         => __( 'Header settings', 'wp_site_theme' ),
-            'description'   => __( 'All settings related to the theme header' ),
-            'priority'      => 160,
-        )
-    );
+// Register theme classes
+function register_wp_site_theme_classes() {
+    require_once get_template_directory() . '/classes/class-theme-customizer.php';
+    new WP_Site_Theme_Customizer();
 }
-add_action( 'customize_register', 'header_customizer' );
+add_action( 'after_setup_theme', 'register_wp_site_theme_classes' );
