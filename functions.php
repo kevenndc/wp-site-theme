@@ -88,7 +88,6 @@ add_action( 'after_setup_theme', 'register_navwalker' );
  * Add bootstrap class 'img-fluid' to the custom logo.
  */
 function change_logo_class( $html ) {
-
     $html = str_replace( 'custom-logo', 'custom-logo img-fluid', $html );
 
     return $html;

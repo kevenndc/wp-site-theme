@@ -9,7 +9,7 @@
 <body <?php body_class(); ?>>
     <div id="page" class="site">
         <header>
-            <div style="background-image: url(<?php echo get_theme_mod( 'set_header_bg' ) ?>)" class="px-3 px-lg-0 py-sm-4 py-lg-0">
+            <div style="background-image: url(<?php echo get_theme_mod( 'set_header_bg' ) ?>)" class="px-3 px-lg-0 py-sm-4 py-lg-0 <?php echo get_theme_mod( 'set_header_bg_position' ) ?>">
                 <div class="logo-wrapper text-center px-5 px-lg-0">
                     <?php
                         if ( has_custom_logo() ) {
