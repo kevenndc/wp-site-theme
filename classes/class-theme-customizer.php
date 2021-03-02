@@ -11,6 +11,7 @@ class WP_Site_Theme_Customizer {
   */
   function header_customizer( $wp_customize ) {
     $wp_customize->add_setting( 'set_header_bg' );
+    $wp_customize->add_setting( 'set_header_bg_position' );
 
     $wp_customize->add_control(
       new WP_Customize_Image_Control(
@@ -25,9 +26,9 @@ class WP_Site_Theme_Customizer {
 
     $wp_customize->add_control(
       'set_header_bg_position', array(
-        'label'     => __( 'Header background position' ),
+        'label'     => __( 'Header background position', 'wp_site_theme' ),
         'section'   => 'title_tagline',
-        'setting'   => 'set_header_bg',
+        'setting'   => 'set_header_bg_position',
         'type'      => 'select',
         'choices'   => array(
           'center'        => __(' Center', 'wp_site_theme' ),

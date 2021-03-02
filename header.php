@@ -7,9 +7,12 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
+<style>
+
+</style>
     <div id="page" class="site">
         <header>
-            <div style="background-image: url(<?php echo get_theme_mod( 'set_header_bg' ) ?>)" class="px-3 px-lg-0 py-sm-4 py-lg-0 <?php echo get_theme_mod( 'set_header_bg_position' ) ?>">
+            <div style="background-image: url(<?php echo get_theme_mod( 'set_header_bg' ) ?>); background-position: <?php echo get_theme_mod( 'set_header_bg_position' ) ?>" class="px-3 px-lg-0 py-sm-4 py-lg-0">
                 <div class="logo-wrapper text-center px-5 px-lg-0">
                     <?php
                         if ( has_custom_logo() ) {
