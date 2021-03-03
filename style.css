@@ -30,14 +30,6 @@ Use it to make something cool, have fun, and share what you've learned with othe
     color: rgba(0,0,0,.9);
 }
 
-.header-top-bg {
-    background-image: url(./assets/img/header-bg.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    
-}
-
 .logo-wrapper {
     padding: 90px 0;
 }

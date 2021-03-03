@@ -3,7 +3,8 @@
 class WP_Site_Theme_Customizer {
 
   public function __construct() {
-    add_action( 'customize_register', array( $this, 'header_customizer' ) );
+    //add_action( 'customize_register', array( $this, 'header_customizer' ) );
+    add_action( 'customize_manager', array( $this, 'register' ) );
   }
 
   /**
@@ -48,40 +49,4 @@ class WP_Site_Theme_Customizer {
       )
     );
   }
-}
-
-/**
- * Defines the panel of Colors customization for the theme
- * 
- * @return array An array of panels, containing sections which contain settings
- */
-function get_color_panel() {
-
-  $output = array();
-
-  $output['colors'] = array(
-    'title'       => esc_html__( 'Colors', 'wp_site_theme' ),
-    'description' => esc_html__( 'Customize the colors of the theme', 'wp_site_theme' ),
-    'priority'    => 20,
-    'sections'    => array(),
-  );
-
-  // Define the desktop section, wich resides in the colors panel
-  $output['colors']['sections']['desktop'] = array(
-    'title'       => esc_html__( 'Desktop', 'wp_site_theme' ),
-    'description' => esc_html__( 'Colors for desktop (default) devices' ),
-    'priority'    => 20,
-    'settings'    => array(),
-  );
-
-  $output['colors']['sections']['desktop']['link_color'] = array(
-    'type'                 => 'color',
-    'label'                => esc_html__( 'Link color', 'wp_site_theme' ),
-    'description'          => esc_html__( 'The color of the links', 'wp_site_theme' ),
-    'priority'             => 10,
-    'default'              => '#0000ee',
-    'sanitize_callback'    => 'sanitize_hex_color',
-    'sanitize_js_callback' => 'sanitize_hex_color',
-    'css' => array(),
-  );
 }
