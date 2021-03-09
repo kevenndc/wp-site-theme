@@ -1,9 +1,12 @@
 <?php
 
+require_once get_template_directory() . '/classes/class-theme-mods.php';
+
 class WP_Site_Theme_Customizer {
 
   public function __construct() {
     //add_action( 'customize_register', array( $this, 'header_customizer' ) );
+    //add_action( 'customize_manager', array( $this, 'header_customizer' ) );
     add_action( 'customize_manager', array( $this, 'register' ) );
   }
 
@@ -48,5 +51,68 @@ class WP_Site_Theme_Customizer {
         )
       )
     );
+  }
+
+  public function register( $wp_customize ) {
+    $theme_mods = new WP_Site_Theme_Mods();
+    $panels     = $theme_mods->get_panels();
+
+    var_dump( $theme_mods  );
+
+    echo $panels;
+
+    foreach ( $panels as $panel_id => $panel ) {
+
+      // adds all panels to the UI
+      $wp_customize->add_panel(
+        $panel_id,
+        array(
+          'title'       => $panel['title'],
+          'description' => $panel['description'],
+          'priority'    => $panel['priority'],
+        )
+      );
+
+      // adds each section of this panel to the UI
+      foreach ( $panel['section'] as $_section_id => $section ) {
+        $section_id = "{$panel_id}_{$_section_id}";
+
+        $wp_customize->add_section(
+          $section_id,
+          array(
+            'title'       => $section['title'],
+            'description' => $section['description'],
+            'priority'    => $section['priority'],
+            'panel'       => $panel_id,
+          )
+        );
+      
+        // adds each setting of the section in the UI
+        foreach ( $section['settings'] as $_setting_id => $setting ) {
+          $setting_id  = "{$panel_id}_{$section_id}_{$_setting_id}";
+
+          // array of arguments for the setting
+          $setting_args = array(
+            'default'               => $setting['default'],
+            'sanitize_callback'     => $setting['sanitize_callback'],
+            'sanitize_js_callback'  => $setting['sanitize_js_callback'],
+          );
+
+          // register the setting
+          $wp_customize->add_setting( $setting_id, $setting_args );
+
+          $control_args = array(
+            'label'       => $setting['label'],
+            'section'     => $section_id,
+            'type'        => $setting['type'],
+            'description' => $setting['description'],
+          );
+
+          // register the setting control
+          $wp_customize->add_control( $setting_id, $setting_args );
+        }
+
+      }
+    }
   }
 }

@@ -1,6 +1,16 @@
 <?php
 
 class WP_Site_Theme_Mods {
+
+  public function get_panels() {
+    $out = $this->get_color_panel();
+    $out = array_merge( $out, $this->get_background_panel() );
+
+    var_dump( $out );
+
+    return $out;
+  }
+
   /**
    * Defines the panel of Colors customization for the theme
    * 
@@ -106,6 +116,13 @@ class WP_Site_Theme_Mods {
       'settings'    => array(),
     );
 
+    $config['background']['sections']['mobile'] = array(
+      'title'       => esc_html__( 'Tablet', 'wp_site_theme' ),
+      'description' => esc_html__( 'Background options for mobile devices.' ),
+      'priority'    => 1,
+      'settings'    => array(),
+    );
+
     $config['background']['sections']['desktop']['settings']['header_background_image'] = array(
       'type'                 => 'image',
       'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
@@ -127,7 +144,7 @@ class WP_Site_Theme_Mods {
       'type'                 => 'image',
       'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
-      'priority'             => 10,
+      'priority'             => 9,
       'default'              => '',
       'sanitize_callback'    => array( $this, 'theme_slug_sanitize_file' ),
 
@@ -137,12 +154,33 @@ class WP_Site_Theme_Mods {
           'selector'  => '.header-top-bg',
           'property'  => 'background-image',
           'queries'   => array(
-            'selector'  => '.header-top-bg',
-            'property'  => 'background-image',
+            'max-width' => '1024px'
           ),
         )
       ),
     );
+
+    $config['background']['sections']['mobile']['settings']['header_background_image'] = array(
+      'type'                 => 'image',
+      'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
+      'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
+      'priority'             => 8,
+      'default'              => '',
+      'sanitize_callback'    => array( $this, 'theme_slug_sanitize_file' ),
+
+      // array of selectors and css propertites which this setting will update
+      'css' => array(
+        array(
+          'selector'  => '.header-top-bg',
+          'property'  => 'background-image',
+          'queries'   => array(
+            'max-width' => '600px'
+          ),
+        )
+      ),
+    );
+
+    return $config;
   }
 
   // file input sanitization function
