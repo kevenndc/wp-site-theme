@@ -1,6 +1,6 @@
 <?php
 
-class WP_Site_Theme_Mods {
+class WPST_Theme_Mods {
 
   public function get_panels() {
     $out = $this->get_color_panel();
@@ -196,7 +196,16 @@ class WP_Site_Theme_Mods {
   }
 
   function get_settings() {
-    
+    $settings = array();
+    $panels   = $this->get_panels();
+
+    foreach ( $panels as $panel_id => $panel ) {
+      foreach ( $panel['sections'] as $section_id => $section ) {
+        foreach ( $section['settings'] as $setting_id => $setting ) {
+          
+        }
+      }
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-class WP_Site_Theme_Customizer {
+class WPST_Theme_Customizer {
 
   static $settings = array();
 
@@ -55,7 +55,7 @@ class WP_Site_Theme_Customizer {
   }
 
   public function register( $wp_customize ) {
-    $theme_mods = new WP_Site_Theme_Mods();
+    $theme_mods = new WPST_Theme_Mods();
     $panels     = $theme_mods->get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
@@ -87,7 +87,7 @@ class WP_Site_Theme_Customizer {
       
         // add each setting of the section in the UI
         foreach ( $section['settings'] as $_setting_id => $setting ) {
-          $setting_id   = "{$section_id}_{$_setting_id}";
+          $setting_id   = THEME_PREFIX . "{$section_id}_{$_setting_id}";
 
           // array of arguments for the setting
           $setting_args = array(
@@ -113,6 +113,8 @@ class WP_Site_Theme_Customizer {
         }
       }
     }
+    $mods = get_theme_mod('colors_typography_link_color_hover');
+    var_dump( $mods );
   }
 
   /**

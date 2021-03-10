@@ -95,10 +95,12 @@ function change_logo_class( $html ) {
 
 add_filter( 'get_custom_logo', 'change_logo_class' );
 
+// default path to WPST theme files
+define( 'WPST_INC_PATH', trailingslashit( get_template_directory( __FILE__ ) . '/inc/' ) );
+
 // Register theme classes
 function register_wp_site_theme_classes() {
-    require_once get_template_directory() . '/classes/class-theme-customizer.php';
-    require_once get_template_directory() . '/classes/class-theme-mods.php';
-    new WP_Site_Theme_Customizer();
+    require_once WPST_INC_PATH . 'class-wpst-theme.php';
+    WPST_Theme::setup();
 }
 add_action( 'after_setup_theme', 'register_wp_site_theme_classes' );
