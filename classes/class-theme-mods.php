@@ -6,8 +6,6 @@ class WP_Site_Theme_Mods {
     $out = $this->get_color_panel();
     $out = array_merge( $out, $this->get_background_panel() );
 
-    var_dump( $out );
-
     return $out;
   }
 
@@ -42,7 +40,6 @@ class WP_Site_Theme_Mods {
       'priority'             => 10,
       'default'              => '#0000ee',
       'sanitize_callback'    => 'sanitize_hex_color',
-      'sanitize_js_callback' => 'sanitize_hex_color',
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -57,10 +54,9 @@ class WP_Site_Theme_Mods {
       'type'                 => 'color',
       'label'                => esc_html__( 'Link color on hover', 'wp_site_theme' ),
       'description'          => esc_html__( 'The color of the links on hover', 'wp_site_theme' ),
-      'priority'             => 10,
+      'priority'             => 9,
       'default'              => '#0000ee',
       'sanitize_callback'    => 'sanitize_hex_color',
-      'sanitize_js_callback' => 'sanitize_hex_color',
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -75,10 +71,9 @@ class WP_Site_Theme_Mods {
       'type'                 => 'color',
       'label'                => esc_html__( 'Body text', 'wp_site_theme' ),
       'description'          => esc_html__( 'The default color of the body text', 'wp_site_theme' ),
-      'priority'             => 10,
+      'priority'             => 8,
       'default'              => '#666',
       'sanitize_callback'    => 'sanitize_hex_color',
-      'sanitize_js_callback' => 'sanitize_hex_color',
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -104,21 +99,21 @@ class WP_Site_Theme_Mods {
 
     $config['background']['sections']['desktop'] = array(
       'title'       => esc_html__( 'Default (Desktop)', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for desktop devices.' ),
+      'description' => esc_html__( 'Background options for desktop devices.', 'wp_site_theme' ),
       'priority'    => 1,
       'settings'    => array(),
     );
 
     $config['background']['sections']['tablet'] = array(
       'title'       => esc_html__( 'Tablet', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for tablet devices.' ),
-      'priority'    => 1,
+      'description' => esc_html__( 'Background options for tablet devices.', 'wp_site_theme' ),
+      'priority'    => 2,
       'settings'    => array(),
     );
 
     $config['background']['sections']['mobile'] = array(
-      'title'       => esc_html__( 'Tablet', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for mobile devices.' ),
+      'title'       => esc_html__( 'Mobile', 'wp_site_theme' ),
+      'description' => esc_html__( 'Background options for mobile devices.', 'wp_site_theme' ),
       'priority'    => 1,
       'settings'    => array(),
     );
@@ -198,6 +193,10 @@ class WP_Site_Theme_Mods {
       
     // if file has a valid mime type return it, otherwise return default
     return ( $file_ext['ext'] ? $file : $setting->default );
-}
+  }
+
+  function get_settings() {
+    
+  }
 }
 

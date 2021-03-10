@@ -1,19 +1,20 @@
 <?php
 
-require_once get_template_directory() . '/classes/class-theme-mods.php';
-
 class WP_Site_Theme_Customizer {
+
+  static $settings = array();
 
   public function __construct() {
     //add_action( 'customize_register', array( $this, 'header_customizer' ) );
-    //add_action( 'customize_manager', array( $this, 'header_customizer' ) );
-    add_action( 'customize_manager', array( $this, 'register' ) );
+    add_action( 'customize_register', array( $this, 'header_customizer' ) );
+    
+    add_action( 'customize_register', array( $this, 'register' ) );
   }
 
   /**
   * Header Settings
   */
-  function header_customizer( $wp_customize ) {
+  public function header_customizer( $wp_customize ) {
     $wp_customize->add_setting( 'set_header_bg' );
     $wp_customize->add_setting( 'set_header_bg_position' );
 
@@ -57,13 +58,9 @@ class WP_Site_Theme_Customizer {
     $theme_mods = new WP_Site_Theme_Mods();
     $panels     = $theme_mods->get_panels();
 
-    var_dump( $theme_mods  );
-
-    echo $panels;
-
     foreach ( $panels as $panel_id => $panel ) {
 
-      // adds all panels to the UI
+      // add all panels to the UI
       $wp_customize->add_panel(
         $panel_id,
         array(
@@ -73,9 +70,10 @@ class WP_Site_Theme_Customizer {
         )
       );
 
-      // adds each section of this panel to the UI
-      foreach ( $panel['section'] as $_section_id => $section ) {
+      // add each section of this panel to the UI
+      foreach ( $panel['sections'] as $_section_id => $section ) {
         $section_id = "{$panel_id}_{$_section_id}";
+        
 
         $wp_customize->add_section(
           $section_id,
@@ -87,32 +85,75 @@ class WP_Site_Theme_Customizer {
           )
         );
       
-        // adds each setting of the section in the UI
+        // add each setting of the section in the UI
         foreach ( $section['settings'] as $_setting_id => $setting ) {
-          $setting_id  = "{$panel_id}_{$section_id}_{$_setting_id}";
+          $setting_id   = "{$section_id}_{$_setting_id}";
 
           // array of arguments for the setting
           $setting_args = array(
             'default'               => $setting['default'],
             'sanitize_callback'     => $setting['sanitize_callback'],
-            'sanitize_js_callback'  => $setting['sanitize_js_callback'],
           );
 
           // register the setting
           $wp_customize->add_setting( $setting_id, $setting_args );
 
           $control_args = array(
-            'label'       => $setting['label'],
-            'section'     => $section_id,
-            'type'        => $setting['type'],
-            'description' => $setting['description'],
+            'setting_id'  => $setting_id,
+            'args'        => array(
+              'label'       => $setting['label'],
+              'section'     => $section_id,
+              'type'        => $setting['type'],
+              'description' => $setting['description'],
+            )
           );
 
-          // register the setting control
-          $wp_customize->add_control( $setting_id, $setting_args );
+          // passes the $wp_customize object and the $control_args to a function to handle
+          $this->add_control( $wp_customize, $control_args );
         }
-
       }
+    }
+  }
+
+  /**
+   * Handles the insertion of the new control by verifying its type and creating a new object accordingly
+   * 
+   * @param WP_Customize_Manager $wp_customize
+   * @param array $control_args
+   */
+  public function add_control( $wp_customize, $control_args ) {
+    $setting_id = $control_args['setting_id'];
+    $args       = $control_args['args'];
+
+    if ( 'color' === $args['type'] ) {
+      $wp_customize->add_control(
+
+        /**
+         * https://developer.wordpress.org/reference/classes/wp_customize_color_control/
+         */
+        new WP_Customize_Color_Control(
+          $wp_customize,
+          $setting_id,
+          $args,
+        )
+      );
+    }
+    elseif ( 'image' === $args['type'] ) {
+      $wp_customize->add_control(
+
+      /**
+       * https://developer.wordpress.org/reference/classes/wp_customize_image_control/
+       */
+        new WP_Customize_Image_Control(
+          $wp_customize, 
+          $setting_id,
+          $args,
+        )
+      );
+    }
+    // if the new control has no type that requires specific controls, then use the controls of WP_Customize_Manager
+    else {
+      $wp_customize->add_control( $setting_id, $args );
     }
   }
 }

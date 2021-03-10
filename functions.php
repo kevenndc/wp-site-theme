@@ -98,6 +98,7 @@ add_filter( 'get_custom_logo', 'change_logo_class' );
 // Register theme classes
 function register_wp_site_theme_classes() {
     require_once get_template_directory() . '/classes/class-theme-customizer.php';
+    require_once get_template_directory() . '/classes/class-theme-mods.php';
     new WP_Site_Theme_Customizer();
 }
 add_action( 'after_setup_theme', 'register_wp_site_theme_classes' );
