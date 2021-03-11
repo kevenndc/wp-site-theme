@@ -124,7 +124,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 10,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'theme_slug_sanitize_file' ),
+      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -141,7 +141,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 9,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'theme_slug_sanitize_file' ),
+      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -161,7 +161,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 8,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'theme_slug_sanitize_file' ),
+      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -178,8 +178,17 @@ class WPST_Theme_Mods {
     return $config;
   }
 
-  // file input sanitization function
-  function theme_slug_sanitize_file( $file, $setting ) {
+  /**
+   * Verifies if the input file is valid by checking its extension.
+   * 
+   * This function is used for customizer image settings.
+   * 
+   * @param string $filename The file name or path.
+   * @param Object $setting The setting in which the file was uploaded.
+   * 
+   * @return boolean Returns TRUE if the file extension is valid and FALSE if it isn't.
+   */
+  function WPST_sanitize_file( $filename, $setting ) {
           
     // allowed file types
     $mimes = array(
@@ -189,23 +198,39 @@ class WPST_Theme_Mods {
     );
       
     // check file type from file name
-    $file_ext = wp_check_filetype( $file, $mimes );
+    $file_ext = wp_check_filetype( $filename, $mimes );
       
     // if file has a valid mime type return it, otherwise return default
-    return ( $file_ext['ext'] ? $file : $setting->default );
+    return ( $file_ext['ext'] ? $filename : $setting->default );
   }
 
+  /**
+   * Get all WPST theme customizer settings ans its values.
+   * 
+   * @return array An array with all settings and its values
+   */
   function get_settings() {
     $settings = array();
     $panels   = $this->get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
-      foreach ( $panel['sections'] as $section_id => $section ) {
-        foreach ( $section['settings'] as $setting_id => $setting ) {
-          
-        }
+      foreach ( $panels['sections'] as $section_id => $section ) {
+        foreach( $section['settings'] as $setting_id => $setting ) {
+
+          $setting_key    = sprintf( WPST_SETTING_FORMAT, $panel_id, $section_id, $setting_id );
+          $setting_value  = get_theme_mod( $setting_key );
+
+          if ( empty( $setting_value ) ) { continue; }
+
+          // add the user defined value into the setting definition array
+          $setting['value'] = $setting_value;
+
+          $setting[ $setting_key ] = $setting;
+        } 
       }
     }
+
+    return $settings;
   }
 }
 

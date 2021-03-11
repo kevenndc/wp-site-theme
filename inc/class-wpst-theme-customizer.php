@@ -2,8 +2,6 @@
 
 class WPST_Theme_Customizer {
 
-  static $settings = array();
-
   public function __construct() {
     //add_action( 'customize_register', array( $this, 'header_customizer' ) );
     add_action( 'customize_register', array( $this, 'header_customizer' ) );
@@ -87,7 +85,7 @@ class WPST_Theme_Customizer {
       
         // add each setting of the section in the UI
         foreach ( $section['settings'] as $_setting_id => $setting ) {
-          $setting_id   = THEME_PREFIX . "{$section_id}_{$_setting_id}";
+          $setting_id   = sprintf( WPST_SETTING_FORMAT, $panel_id, $_section_id, $_setting_id );
 
           // array of arguments for the setting
           $setting_args = array(
@@ -113,8 +111,8 @@ class WPST_Theme_Customizer {
         }
       }
     }
-    $mods = get_theme_mod('colors_typography_link_color_hover');
-    var_dump( $mods );
+    // $mods = get_theme_mods();
+    // var_dump( $mods );
   }
 
   /**

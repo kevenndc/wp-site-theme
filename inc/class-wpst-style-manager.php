@@ -19,8 +19,6 @@ class WP_Site_Theme_Style_Manager {
   public function get_inline_styles( $wrapped = 'wrapped', $output_for = 'front_end' ) {
     $styles = '';
 
-    foreach ( $this->settings as $setting ) {
-      // code here
-    }
+    
   }
 }
