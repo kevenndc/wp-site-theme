@@ -53,8 +53,7 @@ class WPST_Theme_Customizer {
   }
 
   public function register( $wp_customize ) {
-    $theme_mods = new WPST_Theme_Mods();
-    $panels     = $theme_mods->get_panels();
+    $panels = WPST_Theme_Mods::get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
 

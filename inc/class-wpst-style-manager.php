@@ -17,8 +17,19 @@ class WP_Site_Theme_Style_Manager {
    * Loop through theme mods ands builds a string of CSS rules.
    */
   public function get_inline_styles( $wrapped = 'wrapped', $output_for = 'front_end' ) {
-    $styles = '';
+    $styles   = '';
+    $settings = WPST_Theme_Mods::get_settings();
 
-    
+    foreach ( $settings as $setting_id => $setting ) {
+      $css_rules  = $setting['css'];
+      $value      = $setting['value'];
+
+      foreach ( $css_rules as $css ) {
+        $selector = $css['selector'];
+        $property = $css['property'];
+
+        $rule = "$selector { $property: $value };";
+      }
+    }
   }
 }

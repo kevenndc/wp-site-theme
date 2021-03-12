@@ -1,10 +1,13 @@
 <?php
 
-class WPST_Theme_Mods {
+final class WPST_Theme_Mods {
 
-  public function get_panels() {
-    $out = $this->get_color_panel();
-    $out = array_merge( $out, $this->get_background_panel() );
+  // prevents this class from instantiation
+  private function __construct() {}
+
+  public static function get_panels() {
+    $out = self::get_color_panel();
+    $out = array_merge( $out, self::get_background_panel() );
 
     return $out;
   }
@@ -14,7 +17,7 @@ class WPST_Theme_Mods {
    * 
    * @return array An array of panels, containing sections which contain settings
    */
-  function get_color_panel() {
+  static function get_color_panel() {
 
     $config = array();
 
@@ -87,7 +90,7 @@ class WPST_Theme_Mods {
     return $config;
   }
 
-  function get_background_panel() {
+  static function get_background_panel() {
     $config = array();
 
     $config['background'] = array(
@@ -124,7 +127,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 10,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
+      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -141,7 +144,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 9,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
+      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -161,7 +164,7 @@ class WPST_Theme_Mods {
       'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
       'priority'             => 8,
       'default'              => '',
-      'sanitize_callback'    => array( $this, 'WPST_sanitize_file' ),
+      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -205,13 +208,13 @@ class WPST_Theme_Mods {
   }
 
   /**
-   * Get all WPST theme customizer settings ans its values.
+   * Get all WPST theme customizer settings and its values.
    * 
    * @return array An array with all settings and its values
    */
-  function get_settings() {
+  static function get_settings() {
     $settings = array();
-    $panels   = $this->get_panels();
+    $panels   = self::get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
       foreach ( $panels['sections'] as $section_id => $section ) {
@@ -225,7 +228,7 @@ class WPST_Theme_Mods {
           // add the user defined value into the setting definition array
           $setting['value'] = $setting_value;
 
-          $setting[ $setting_key ] = $setting;
+          $settings[ $setting_key ] = $setting;
         } 
       }
     }
