@@ -5,21 +5,16 @@ final class WPST_Theme_Mods {
   // prevents this class from instantiation
   private function __construct() {}
 
-  public static function get_panels() {
-    $out = self::get_color_panel();
-    $out = array_merge( $out, self::get_background_panel() );
-
-    return $out;
-  }
-
   /**
    * Defines the panel of Colors customization for the theme
    * 
    * @return array An array of panels, containing sections which contain settings
    */
-  static function get_color_panel() {
+  static function get_panels() {
 
     $config = array();
+
+    /* ---- COLORS ---- */
 
     $config['colors'] = array(
       'title'       => esc_html__( 'Colors', 'wp_site_theme' ),
@@ -28,7 +23,6 @@ final class WPST_Theme_Mods {
       'sections'    => array(),
     );
 
-    // Define the desktop section inside the colors panel
     $config['colors']['sections']['typography'] = array(
       'title'       => esc_html__( 'Text colors', 'wp_site_theme' ),
       'description' => esc_html__( 'Default text colors.', 'wp_site_theme' ),
@@ -87,11 +81,7 @@ final class WPST_Theme_Mods {
       ),
     );
 
-    return $config;
-  }
-
-  static function get_background_panel() {
-    $config = array();
+    /* ---- BACKGROUND ---- */
 
     $config['background'] = array(
       'title'       => esc_html__( 'Background', 'wp_site_theme' ),
@@ -151,6 +141,7 @@ final class WPST_Theme_Mods {
         array(
           'selector'  => '.header-top-bg',
           'property'  => 'background-image',
+          'device'    => 'tablet', // this option is used to set the current css rule into the default 'tablet' media query
           'queries'   => array(
             'max-width' => '1024px'
           ),
@@ -171,6 +162,7 @@ final class WPST_Theme_Mods {
         array(
           'selector'  => '.header-top-bg',
           'property'  => 'background-image',
+          'device'    => 'mobile', // this option is used to set the current css rule into the default 'mobile' media query
           'queries'   => array(
             'max-width' => '600px'
           ),
