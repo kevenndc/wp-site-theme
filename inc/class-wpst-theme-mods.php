@@ -17,23 +17,23 @@ final class WPST_Theme_Mods {
     /* ---- COLORS ---- */
 
     $config['colors'] = array(
-      'title'       => esc_html__( 'Colors', 'wp_site_theme' ),
-      'description' => esc_html__( 'Customize the colors of the theme', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Colors', WPST_THEME ),
+      'description' => esc_html__( 'Customize the colors of the theme', WPST_THEME ),
       'priority'    => 20,
       'sections'    => array(),
     );
 
     $config['colors']['sections']['typography'] = array(
-      'title'       => esc_html__( 'Text colors', 'wp_site_theme' ),
-      'description' => esc_html__( 'Default text colors.', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Text colors', WPST_THEME ),
+      'description' => esc_html__( 'Default text colors.', WPST_THEME ),
       'priority'    => 20,
       'settings'    => array(),
     );
 
     $config['colors']['sections']['typography']['settings']['link_color'] = array(
       'type'                 => 'color',
-      'label'                => esc_html__( 'Link color', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The color of the links', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Link color', WPST_THEME ),
+      'description'          => esc_html__( 'The color of the links', WPST_THEME ),
       'priority'             => 10,
       'default'              => '#0000ee',
       'sanitize_callback'    => 'sanitize_hex_color',
@@ -49,8 +49,8 @@ final class WPST_Theme_Mods {
 
     $config['colors']['sections']['typography']['settings']['link_color_hover'] = array(
       'type'                 => 'color',
-      'label'                => esc_html__( 'Link color on hover', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The color of the links on hover', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Link color on hover', WPST_THEME ),
+      'description'          => esc_html__( 'The color of the links on hover', WPST_THEME ),
       'priority'             => 9,
       'default'              => '#0000ee',
       'sanitize_callback'    => 'sanitize_hex_color',
@@ -66,8 +66,8 @@ final class WPST_Theme_Mods {
 
     $config['colors']['sections']['typography']['settings']['body_text'] = array(
       'type'                 => 'color',
-      'label'                => esc_html__( 'Body text', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The default color of the body text', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Body text', WPST_THEME ),
+      'description'          => esc_html__( 'The default color of the body text', WPST_THEME ),
       'priority'             => 8,
       'default'              => '#666',
       'sanitize_callback'    => 'sanitize_hex_color',
@@ -84,37 +84,37 @@ final class WPST_Theme_Mods {
     /* ---- BACKGROUND ---- */
 
     $config['background'] = array(
-      'title'       => esc_html__( 'Background', 'wp_site_theme' ),
-      'description' => esc_html__( 'Theme background options', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Background', WPST_THEME ),
+      'description' => esc_html__( 'Theme background options', WPST_THEME ),
       'priority'    => 19,
       'sections'    => array(),
     );
 
     $config['background']['sections']['desktop'] = array(
-      'title'       => esc_html__( 'Default (Desktop)', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for desktop devices.', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Default (Desktop)', WPST_THEME ),
+      'description' => esc_html__( 'Background options for desktop devices.', WPST_THEME ),
       'priority'    => 1,
       'settings'    => array(),
     );
 
     $config['background']['sections']['tablet'] = array(
-      'title'       => esc_html__( 'Tablet', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for tablet devices.', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Tablet', WPST_THEME ),
+      'description' => esc_html__( 'Background options for tablet devices.', WPST_THEME ),
       'priority'    => 2,
       'settings'    => array(),
     );
 
     $config['background']['sections']['mobile'] = array(
-      'title'       => esc_html__( 'Mobile', 'wp_site_theme' ),
-      'description' => esc_html__( 'Background options for mobile devices.', 'wp_site_theme' ),
+      'title'       => esc_html__( 'Mobile', WPST_THEME ),
+      'description' => esc_html__( 'Background options for mobile devices.', WPST_THEME ),
       'priority'    => 1,
       'settings'    => array(),
     );
 
     $config['background']['sections']['desktop']['settings']['header_background_image'] = array(
       'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Header background image', WPST_THEME ),
+      'description'          => esc_html__( 'The header background image', WPST_THEME ),
       'priority'             => 10,
       'default'              => '',
       'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
@@ -130,8 +130,8 @@ final class WPST_Theme_Mods {
 
     $config['background']['sections']['tablet']['settings']['header_background_image'] = array(
       'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Header background image', WPST_THEME ),
+      'description'          => esc_html__( 'The header background image', WPST_THEME ),
       'priority'             => 9,
       'default'              => '',
       'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
@@ -151,8 +151,8 @@ final class WPST_Theme_Mods {
 
     $config['background']['sections']['mobile']['settings']['header_background_image'] = array(
       'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', 'wp_site_theme' ),
-      'description'          => esc_html__( 'The header background image', 'wp_site_theme' ),
+      'label'                => esc_html__( 'Header background image', WPST_THEME ),
+      'description'          => esc_html__( 'The header background image', WPST_THEME ),
       'priority'             => 8,
       'default'              => '',
       'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
@@ -209,8 +209,8 @@ final class WPST_Theme_Mods {
     $panels   = self::get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
-      foreach ( $panels['sections'] as $section_id => $section ) {
-        foreach( $section['settings'] as $setting_id => $setting ) {
+      foreach ( $panel['sections'] as $section_id => $section ) {
+        foreach ( $section['settings'] as $setting_id => $setting ) {
 
           $setting_key    = sprintf( WPST_SETTING_FORMAT, $panel_id, $section_id, $setting_id );
           $setting_value  = get_theme_mod( $setting_key );

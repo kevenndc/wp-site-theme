@@ -5,12 +5,13 @@
  */
 class WP_Site_Theme_Style_Manager {
 
-  public function __construct( array $settings, $output_for = 'front_end') {
+  public function __construct( $output_for = 'front_end' ) {
     add_action( 'wp_enqueue_scripts', array( $this, 'front_end_styles' ) );
   }
 
   public function front_end_styles() {
-    // code here
+    $styles = $this->get_inline_styles();
+    wp_add_inline_style( WPST_THEME, $styles );
   }
 
   /**
@@ -19,17 +20,12 @@ class WP_Site_Theme_Style_Manager {
   public function get_inline_styles( $wrapped = 'wrapped', $output_for = 'front_end' ) {
     $styles       = '';
 
-    // the default media query format for tablet devices
-    $tablet_query = '@media only screen and (min-width: 601px) and (max-width: 1024px) { %s }';
-
     // this variable will concatenate all the css rules for tablet devices
     $tablet_rules = '';
-
-    // the default media query format for mobile devices
-    $mobile_query = '@media only screen and (max-width: 600px) { %s }';
     
     // this variable will concatenate all the css rules for mobile devices
     $mobile_rules = '';
+
     $settings     = WPST_Theme_Mods::get_settings();
 
     foreach ( $settings as $setting_id => $setting ) {
@@ -59,12 +55,15 @@ class WP_Site_Theme_Style_Manager {
       } 
     }
 
-    // creates and add the media query for tablet devices with all its rules to the inline styles
-    $styles .= sprintf( $tablet_query, $tablet_rules );
+    if ( ! empty( $tablet_rules ) ) {
+      // creates and add the media query for tablet devices with all its rules to the inline styles
+      $styles .= sprintf( WPST_TABLET_QUERY, $tablet_rules );
+    }
 
-    // create and add the media query for mobile devices with all its rules to the inline styles
-    $styles .= sprintf( $mobile_query, $mobile_rules );
-
+    if ( ! empty( $mobile_rules ) ) {
+      // creates and add the media query for tablet devices with all its rules to the inline styles
+      $styles .= sprintf( WPST_MOBILE_QUERY, $mobile_rules );
+    }
     
     return $styles;
   }

@@ -56,34 +56,6 @@ function wp_site_theme_setup() {
 }
 add_action( 'after_setup_theme', 'wp_site_theme_setup' );
 
-// Enqueue the default theme CSS styles
-function setup_wp_site_theme_styles() {
-    // Add de Theme custom style
-    wp_enqueue_style( 'wp-site-theme-style', get_template_directory_uri() . '/style.css', array( 'bootstrap' ), wp_get_theme()->get( 'Version' ) );
-    
-    // Includes Bootstrap css to theme
-    wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), '4.4.1', 'all');
-}
-
-add_action( 'wp_enqueue_scripts', 'setup_wp_site_theme_styles');
-
-// Enqueue the default theme JS  files
-function setup_wp_site_theme_scripts() {
-    // Add Bootstrap js to theme
-    wp_enqueue_script('popper', get_template_directory_uri() . '/assets/js/popper.min.js', array('jquery'), '4.1.3', true);
-    // Add Bootstrap js to theme
-    wp_enqueue_script('bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery', 'popper'), '4.1.3', true);
-}
-add_action( 'wp_enqueue_scripts', 'setup_wp_site_theme_scripts');
-
-
-// Register custom Navwalker
-function register_navwalker() {
-    require_once get_template_directory() . '/assets/php/class-wp-bootstrap-navwalker.php';
-}
-
-add_action( 'after_setup_theme', 'register_navwalker' );
-
 /**
  * Add bootstrap class 'img-fluid' to the custom logo.
  */
