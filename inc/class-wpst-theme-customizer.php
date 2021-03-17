@@ -53,6 +53,7 @@ class WPST_Theme_Customizer {
   }
 
   public function register( $wp_customize ) {
+    $mods   =
     $panels = WPST_Theme_Mods::get_panels();
 
     foreach ( $panels as $panel_id => $panel ) {
@@ -149,6 +150,9 @@ class WPST_Theme_Customizer {
           $args,
         )
       );
+    }
+    elseif ( 'select' === $args['type'] ) {
+
     }
     // if the new control has no type that requires specific controls, then use the controls of WP_Customize_Manager
     else {

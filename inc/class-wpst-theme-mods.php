@@ -2,7 +2,6 @@
 
 final class WPST_Theme_Mods {
 
-  // prevents this class from instantiation
   private function __construct() {}
 
   /**
@@ -10,7 +9,7 @@ final class WPST_Theme_Mods {
    * 
    * @return array An array of panels, containing sections which contain settings
    */
-  static function get_panels() {
+  public static function get_panels() {
 
     $config = array();
 
@@ -111,7 +110,8 @@ final class WPST_Theme_Mods {
       'settings'    => array(),
     );
 
-    $config['background']['sections']['desktop']['settings']['header_background_image'] = array(
+    $bg_image = array(
+      'key'                  => 'header_background_image',
       'type'                 => 'image',
       'label'                => esc_html__( 'Header background image', WPST_THEME ),
       'description'          => esc_html__( 'The header background image', WPST_THEME ),
@@ -128,58 +128,54 @@ final class WPST_Theme_Mods {
       ),
     );
 
-    $config['background']['sections']['tablet']['settings']['header_background_image'] = array(
-      'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', WPST_THEME ),
-      'description'          => esc_html__( 'The header background image', WPST_THEME ),
-      'priority'             => 9,
-      'default'              => '',
-      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
-
-      // array of selectors and css propertites which this setting will update
-      'css' => array(
+    $config['background']['sections'] = self::make_setting_for_all_devices(
+      $config['background']['sections'],
+      $bg_image, 
+    );
+    
+    $header_bg_pos =  array (
+      'key'               => 'header_background_position',
+      'type'              => 'select',
+      'label'             => esc_html__( 'Header background position', WPST_THEME ),
+      'description'       => esc_html__( 'Controls the hseader background position', WPST_THEME ),
+      'priority'          => 9,
+      'default'           => 'center',
+      'sanitize_callback' => array( __CLASS__, 'WPST_sanitize_select' ),
+      'css'               => array(
         array(
-          'selector'  => '.header-top-bg',
-          'property'  => 'background-image',
-          'device'    => 'tablet', // this option is used to set the current css rule into the default 'tablet' media query
-          'queries'   => array(
-            'max-width' => '1024px'
-          ),
+          'selector'  => '.header-background-position',
+          'property'  => 'background-position',
         )
       ),
+      'options'         => array (
+        'center'        => esc_html__( 'Center', WPST_THEME ),
+        'center top'    => esc_html__( 'Center top', WPST_THEME ),
+        'center bottom' => esc_html__( 'Center bottom', WPST_THEME ),
+        'top right'     => esc_html__( 'Top right', WPST_THEME ),
+        'top left'      => esc_html__( 'Top left', WPST_THEME ),
+        'bottom right'  => esc_html__( 'Bottom right', WPST_THEME ),
+        'bottom left'   => esc_html__( 'Bottom left', WPST_THEME ),
+        'right'         => esc_html__( 'Right', WPST_THEME ),
+        'left'          => esc_html__( 'Left', WPST_THEME ),
+      ),
+      
     );
 
-    $config['background']['sections']['mobile']['settings']['header_background_image'] = array(
-      'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', WPST_THEME ),
-      'description'          => esc_html__( 'The header background image', WPST_THEME ),
-      'priority'             => 8,
-      'default'              => '',
-      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
-
-      // array of selectors and css propertites which this setting will update
-      'css' => array(
-        array(
-          'selector'  => '.header-top-bg',
-          'property'  => 'background-image',
-          'device'    => 'mobile', // this option is used to set the current css rule into the default 'mobile' media query
-          'queries'   => array(
-            'max-width' => '600px'
-          ),
-        )
-      ),
+    $config['background']['sections'] = self::make_setting_for_all_devices(
+      $config['background']['sections'],
+      $header_bg_pos
     );
 
     return $config;
   }
 
   /**
-   * Verifies if the input file is valid by checking its extension.
+   * Checks if the input file is valid by checking its extension.
    * 
-   * This function is used for customizer image settings.
+   * This function is used for image type settings.
    * 
    * @param string $filename The file name or path.
-   * @param Object $setting The setting in which the file was uploaded.
+   * @param Object $setting The setting object.
    * 
    * @return boolean Returns TRUE if the file extension is valid and FALSE if it isn't.
    */
@@ -200,11 +196,34 @@ final class WPST_Theme_Mods {
   }
 
   /**
+  * Checks if the input option exists in the setting select choices
+  * 
+  * This function is used for select type settings.
+  * 
+  * @param string $input The key of the choice.
+  * @param Object $setting The setting object.
+  * 
+  * @return boolean Returns TRUE if the file extension is valid and FALSE if it isn't.
+  */
+  function WPST_sanitize_select( $input, $setting ){
+            
+    // input must be a slug: lowercase alphanumeric characters, dashes and underscores are allowed only
+    $input = sanitize_key( $input );
+
+    // get the list of possible select options 
+    $choices = $setting->manager->get_control( $setting->id )->choices;
+                      
+    // return input if valid or return default option
+    return array_key_exists( $input, $choices ) ? $input : $setting->default;                
+        
+  }
+
+  /**
    * Get all WPST theme customizer settings and its values.
    * 
    * @return array An array with all settings and its values
    */
-  static function get_settings() {
+  public static function get_settings() {
     $settings = array();
     $panels   = self::get_panels();
 
@@ -226,6 +245,31 @@ final class WPST_Theme_Mods {
     }
 
     return $settings;
+  }
+
+  /**
+   * Utilitary function to insert the same setting config into diferent device panels
+   */
+  private static function make_setting_for_all_devices( $sections, $setting_config ) {
+    $setting_key = $setting_config['key'];
+    unset($setting_config['key']);
+
+    foreach ( $sections as $section_id => $section ) {
+      var_dump( $section);
+      if ( 'desktop' === $section_id ) {
+        $setting_config['device'] = 'desktop';
+      }
+      elseif ( 'tablet' === $section_id ) {
+        $setting_config['device'] = 'tablet';
+      }
+      elseif ( 'mobile' === $section_id ) {
+        $setting_config['device'] = 'mobile';
+      }
+      
+      $section['settings'][$setting_key] = $setting_config;
+    }
+
+    return $sections;
   }
 }
 

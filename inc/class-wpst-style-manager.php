@@ -30,13 +30,13 @@ class WP_Site_Theme_Style_Manager {
 
     foreach ( $settings as $setting_id => $setting ) {
       $css_rules  = $setting['css'];
-      $value      = $setting['value'];
+      $value      = $this->get_value( $setting );
 
       foreach ( $css_rules as $css ) {
         $selector = $css['selector'];
         $property = $css['property'];
 
-        $rule = "$selector { $property: $value };";
+        $rule = "$selector { $property: $value; }";
 
         // check if the current rule is for a specific device
         if ( isset( $setting['device'] ) ) {
@@ -66,5 +66,16 @@ class WP_Site_Theme_Style_Manager {
     }
     
     return $styles;
+  }
+
+  private function get_value( $setting ) {
+    $value = $setting['value'];
+
+    if ( 'image' === $setting['type'] ) {
+      return "url($value)";
+    }
+    else {
+      return $value;
+    }
   }
 }
