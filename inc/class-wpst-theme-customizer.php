@@ -151,9 +151,9 @@ class WPST_Theme_Customizer {
         )
       );
     }
-    elseif ( 'select' === $args['type'] ) {
+    // elseif ( 'select' === $args['type'] ) {
 
-    }
+    // }
     // if the new control has no type that requires specific controls, then use the controls of WP_Customize_Manager
     else {
       $wp_customize->add_control( $setting_id, $args );

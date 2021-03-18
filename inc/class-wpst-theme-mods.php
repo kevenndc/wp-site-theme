@@ -11,7 +11,8 @@ final class WPST_Theme_Mods {
    */
   public static function get_panels() {
 
-    $config = array();
+    $config   = array();
+    $devices  = array ( 'desktop', 'tablet', 'mobile' );
 
     /* ---- COLORS ---- */
 
@@ -110,14 +111,20 @@ final class WPST_Theme_Mods {
       'settings'    => array(),
     );
 
-    $bg_image = array(
-      'key'                  => 'header_background_image',
-      'type'                 => 'image',
-      'label'                => esc_html__( 'Header background image', WPST_THEME ),
-      'description'          => esc_html__( 'The header background image', WPST_THEME ),
-      'priority'             => 10,
-      'default'              => '',
-      'sanitize_callback'    => array( __CLASS__, 'WPST_sanitize_file' ),
+
+    $bg_image_args = array(
+      // the meta key is used for storing values wich will only be used to create this setting in diferent sections for the same panel.
+      'meta'  => array(
+        'setting_key' => 'header_background_image',
+        'devices'     =>  $devices,
+      ),
+
+      'type'              => 'image',
+      'label'             => esc_html__( 'Header background image', WPST_THEME ),
+      'description'       => esc_html__( 'The header background image', WPST_THEME ),
+      'priority'          => 10,
+      'default'           => '',
+      'sanitize_callback' => array( __CLASS__, 'WPST_sanitize_file' ),
 
       // array of selectors and css propertites which this setting will update
       'css' => array(
@@ -127,17 +134,16 @@ final class WPST_Theme_Mods {
         )
       ),
     );
-
-    $config['background']['sections'] = self::make_setting_for_all_devices(
-      $config['background']['sections'],
-      $bg_image, 
-    );
+    self::set_setting_for_all_devices( $config['background']['sections'], $bg_image_args );
     
-    $header_bg_pos =  array (
-      'key'               => 'header_background_position',
+    $header_bg_pos_args =  array (
+      'meta'  => array(
+        'setting_key' => 'header_background_position',
+        'devices'     =>  $devices,
+      ),
       'type'              => 'select',
       'label'             => esc_html__( 'Header background position', WPST_THEME ),
-      'description'       => esc_html__( 'Controls the hseader background position', WPST_THEME ),
+      'description'       => esc_html__( 'Controls the header background position', WPST_THEME ),
       'priority'          => 9,
       'default'           => 'center',
       'sanitize_callback' => array( __CLASS__, 'WPST_sanitize_select' ),
@@ -160,11 +166,9 @@ final class WPST_Theme_Mods {
       ),
       
     );
+    self::set_setting_for_all_devices( $config['background']['sections'], $header_bg_pos_args );
 
-    $config['background']['sections'] = self::make_setting_for_all_devices(
-      $config['background']['sections'],
-      $header_bg_pos
-    );
+    var_dump( $config['background']['sections'] );
 
     return $config;
   }
@@ -234,7 +238,7 @@ final class WPST_Theme_Mods {
           $setting_key    = sprintf( WPST_SETTING_FORMAT, $panel_id, $section_id, $setting_id );
           $setting_value  = get_theme_mod( $setting_key );
 
-          if ( empty( $setting_value ) ) { continue; }
+          if ( empty( $setting_value ) ) { continue; } 
 
           // add the user defined value into the setting definition array
           $setting['value'] = $setting_value;
@@ -250,26 +254,17 @@ final class WPST_Theme_Mods {
   /**
    * Utilitary function to insert the same setting config into diferent device panels
    */
-  private static function make_setting_for_all_devices( $sections, $setting_config ) {
-    $setting_key = $setting_config['key'];
-    unset($setting_config['key']);
+  private static function set_setting_for_all_devices( &$sections, $setting_config ) {
+    $setting_key  = $setting_config['meta']['setting_key'];
+    $devices      = $setting_config['meta']['devices'];
 
-    foreach ( $sections as $section_id => $section ) {
-      var_dump( $section);
-      if ( 'desktop' === $section_id ) {
-        $setting_config['device'] = 'desktop';
+    unset( $setting_config['meta'] );
+
+    foreach ( $devices as $device ) {
+      if ( isset( $sections[$device]['settings'] ) ) {
+        $sections[$device]['settings'][$setting_key] = $setting_config;
       }
-      elseif ( 'tablet' === $section_id ) {
-        $setting_config['device'] = 'tablet';
-      }
-      elseif ( 'mobile' === $section_id ) {
-        $setting_config['device'] = 'mobile';
-      }
-      
-      $section['settings'][$setting_key] = $setting_config;
     }
-
-    return $sections;
   }
 }
 
