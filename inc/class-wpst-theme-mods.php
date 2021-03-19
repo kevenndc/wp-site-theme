@@ -153,7 +153,7 @@ final class WPST_Theme_Mods {
           'property'  => 'background-position',
         )
       ),
-      'options'         => array (
+      'choices'         => array (
         'center'        => esc_html__( 'Center', WPST_THEME ),
         'center top'    => esc_html__( 'Center top', WPST_THEME ),
         'center bottom' => esc_html__( 'Center bottom', WPST_THEME ),
@@ -167,8 +167,6 @@ final class WPST_Theme_Mods {
       
     );
     self::set_setting_for_all_devices( $config['background']['sections'], $header_bg_pos_args );
-
-    var_dump( $config['background']['sections'] );
 
     return $config;
   }
@@ -209,7 +207,7 @@ final class WPST_Theme_Mods {
   * 
   * @return boolean Returns TRUE if the file extension is valid and FALSE if it isn't.
   */
-  function WPST_sanitize_select( $input, $setting ){
+  function WPST_sanitize_select( $input, $setting ) {
             
     // input must be a slug: lowercase alphanumeric characters, dashes and underscores are allowed only
     $input = sanitize_key( $input );
@@ -262,6 +260,7 @@ final class WPST_Theme_Mods {
 
     foreach ( $devices as $device ) {
       if ( isset( $sections[$device]['settings'] ) ) {
+        $setting_config['device'] = $device;
         $sections[$device]['settings'][$setting_key] = $setting_config;
       }
     }

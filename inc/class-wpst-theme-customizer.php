@@ -96,7 +96,7 @@ class WPST_Theme_Customizer {
           // register the setting
           $wp_customize->add_setting( $setting_id, $setting_args );
 
-          $control_args = array(
+          $control = array(
             'setting_id'  => $setting_id,
             'args'        => array(
               'label'       => $setting['label'],
@@ -106,8 +106,16 @@ class WPST_Theme_Customizer {
             )
           );
 
-          // passes the $wp_customize object and the $control_args to a function to handle
-          $this->add_control( $wp_customize, $control_args );
+          if ( isset( $setting['choices'] ) ) {
+            $control['args']['choices'] = $setting['choices'];
+          }
+
+          // passes the $wp_customize object and the $control to a function to handle
+          $result = $this->add_control( $wp_customize, $control );
+
+          if ( is_wp_error( $result ) ) {
+            echo $result->get_error_message();
+          }
         }
       }
     }
@@ -151,12 +159,11 @@ class WPST_Theme_Customizer {
         )
       );
     }
-    // elseif ( 'select' === $args['type'] ) {
-
-    // }
     // if the new control has no type that requires specific controls, then use the controls of WP_Customize_Manager
     else {
       $wp_customize->add_control( $setting_id, $args );
     }
+
+    return $wp_customize;
   }
 }
